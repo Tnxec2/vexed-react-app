@@ -6,6 +6,9 @@ export default function LevelList(props: {
     levels: ILevel[]
     onChange: (index: number) => void
 }) {
+    
+    const selectedLevel = props.levels.findIndex((level) => level.title === props.selected)
+
     return (
         <>
             <div className={styles.customSelect}>
@@ -15,12 +18,12 @@ export default function LevelList(props: {
                     onChange={(e) => {
                         props.onChange(Number(e.target.value))
                     }}
+                    defaultValue={selectedLevel}
                 >
                     {props.levels.map((level, index) => (
                         <option
                             value={index}
                             key={level.title}
-                            selected={props.selected === level.title}
                         >
                             {level.title}
                         </option>

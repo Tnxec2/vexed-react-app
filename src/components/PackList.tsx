@@ -5,6 +5,7 @@ export default function PackList(props: {
     selected: string
     onChange: (index: number) => void
 }) {
+    const selectedPack = packs.findIndex((pack) => pack.file === props.selected)
     return (
         <>
             <div className={styles.customSelect}>
@@ -14,12 +15,13 @@ export default function PackList(props: {
                     onChange={(e) => {
                         props.onChange(Number(e.target.value))
                     }}
+                    defaultValue={selectedPack}
                 >
                     {packs.map((pack, index) => (
                         <option
                             value={index}
                             key={pack.title}
-                            selected={props.selected === pack.file}
+                            
                         >
                             {pack.title}
                         </option>
