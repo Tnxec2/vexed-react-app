@@ -8,7 +8,6 @@ import PackList from './components/PackList'
 import Modal from './components/Modal'
 import Game from './components/Game'
 import { useGetLevels } from './helpers/levelparser'
-import AlertBox, { ALERT_TYPE } from './components/AlertBox'
 
 function App() {
     const [showPackList, setShowPackList] = useState(false)
