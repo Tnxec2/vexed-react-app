@@ -1,0 +1,9 @@
+
+.container {
+    width: -moz-fit-content;
+    width: fit-content;
+    margin: 0 auto;
+}
+.buttonbox {
+    margin-top: 1em;
+}

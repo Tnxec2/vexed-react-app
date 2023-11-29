@@ -41,13 +41,13 @@ export default function Board(props: {
         switch (cellStr) {
             case CELL_TYPES.WALL:
                 return (
-                    <div className={`${styles.wall} ${styles.cell}`}>
+                    <div key={coords.row + '' + coords.col} className={`${styles.wall} ${styles.cell}`}>
                         <img src={'assets/wall.bmp'} alt={cellStr} />
                     </div>
                 )
             case CELL_TYPES.AIR:
                 return (
-                    <div
+                    <div key={coords.row + '' + coords.col}
                         className={`${styles.empty} ${styles.cell} ${
                             canClicked(coords) ? styles.clickable : ''
                         }`}
@@ -56,7 +56,7 @@ export default function Board(props: {
                 )
             default:
                 return (
-                    <div
+                    <div key={coords.row + '' + coords.col}
                         className={`${styles.cell} ${
                             props.canClick ? styles.clickable : ''
                         } ${isClicked(coords) ? styles.clicked : ''}`}
