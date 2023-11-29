@@ -38,7 +38,6 @@ export function parseLevels(lines: string[]) {
     const newLevels: ILevel[] = []
 
     lines.forEach((line) => {
-        console.log('line', line)
         if (line.includes('[Level]')) {
             if (title) {
                 newLevels.push({
@@ -63,7 +62,6 @@ const parseBoard = (boardLine: string): TBoard => {
     let result: TBoard = []
     for (let rowNumber = 0; rowNumber < 8; rowNumber++) {
         let boardRow: string[] = []
-        console.log(rowNumber, rows[rowNumber])
 
         if (rowNumber >= rows.length || rows[rowNumber] === '10')
             boardRow = getEmptyCels(10)
