@@ -64,15 +64,15 @@ function App() {
                 </h2>
                 <h3>
                     {pack.desc}
-                    <button
+                </h3>
+
+                <button
                         type="button"
-                        className="button selectPackButton"
+                        className="button selectLevelButton"
                         onClick={() => setShowLevelList(true)}
                     >
                         Select Level
                     </button>
-                </h3>
-
                 {game && (
                     <Game
                         initGame={game}
