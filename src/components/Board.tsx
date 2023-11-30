@@ -8,6 +8,7 @@ export default function Board(props: {
     canClick: boolean
     board: TBoard
     onMove: (from: ICoords, to: ICoords) => void
+    onClick: (itemCoords: ICoords) => void
 }) {
     const [clickedItem, setClickedItem] = useState<ICoords | null>()
 
@@ -61,7 +62,10 @@ export default function Board(props: {
                             props.canClick ? styles.clickable : ''
                         } ${isClicked(coords) ? styles.clicked : ''}`}
                         onClick={() => {
-                            if (props.canClick) setClickedItem(coords)
+                            if (props.canClick) {
+                                setClickedItem(coords)
+                                props.onClick(coords)
+                            }
                         }}
                     >
                         <img

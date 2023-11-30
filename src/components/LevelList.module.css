@@ -2,14 +2,11 @@
     width: 100%;
     position: relative;
     margin: 0 auto;
+    height: 20em;
+    overflow-y: auto;
 }
 
-.customSelect select {
-    appearance: none;
-    /* safari */
-    -webkit-appearance: none;
-    /* other styles for aesthetics */
-    width: 100%;
+.customSelectItem {
     font-size: 1.15rem;
     padding: 0.675em 0.6em 0.675em 1em;
     background-color: #fff;
@@ -17,4 +14,12 @@
     border-radius: 0.25rem;
     color: #000;
     cursor: pointer;
+
+    line-height: 2em;
+    display: flex;
+    justify-content: space-between;
+}
+
+.selected {
+    background-color: #c7c7c7;
 }

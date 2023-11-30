@@ -1,31 +1,93 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { ICoords } from '../model/coords'
 import { ILevel, TBoard } from '../model/level'
 import { CELL_TYPES, MOVING_TIMEOUT } from '../const'
 import Board from './Board'
 import styles from './Game.module.css'
+import { useSecondsInterval } from '../helpers/useSecondsInterval'
+import { formatTime } from '../helpers/time'
+import { ILevelSolvedData } from '../model/stats'
 
 export default function Game(props: {
     initGame: ILevel
-    onWin: () => void
+    onWin: (turnCount: number, time: number) => void
     onFail: () => void
 }) {
     const [game, setGame] = useState<ILevel>()
+    const [lastSolved, setLastSolved] = useState<ILevelSolvedData>()
     const [canClick, setCanClick] = useState(true)
+    const [won, setWon] = useState(false)
+    const [gameOver, setGameOver] = useState(false)
+    const [turns, setTurns] = useState(0)
+    
+    const [startTime, setStartTime] = useState(new Date().getTime())
 
+    const [seconds, setSeconds] = useState(0);
+    const [running, setRunning] = useState(true);
+
+    const tick = useCallback(
+        () => (running ? setSeconds((seconds) => seconds + 1) : undefined),
+        [running]
+    );
+
+    const start = () => setRunning(true);
+    const pause = () => setRunning(false);
+    const reset = () => setSeconds(0);
+
+    const stop = () => {
+        pause();
+        reset();
+    };
+
+    useSecondsInterval(tick);
+    
     useEffect(()=> {
+        console.log('initGame changed');
+
         startNewGame()
-    }, [props.initGame])
+    }, [props.initGame.title])
+
+    useEffect(()=>{
+        if (won) {
+        setCanClick(false)
+        pause()
+        props.onWin(turns, seconds)
+        setCanClick(false)
+        }
+    }, [won])
+
+    useEffect(()=>{
+        if (gameOver) {
+        setCanClick(false)
+        pause()
+        props.onFail()
+        setCanClick(false)
+        }
+    }, [gameOver])
 
     function startNewGame() {
-        setGame({title: props.initGame.title, board: props.initGame.board.map((row) => [...row]), solution: props.initGame.solution})
+        setGame({
+            id: props.initGame.id,
+            title: props.initGame.title, 
+            board: props.initGame.board.map((row) => [...row]), 
+            solution: props.initGame.solution,
+        })
+        props.initGame.solved ? setLastSolved({...props.initGame.solved}) : setLastSolved(undefined)
         setCanClick(true)
+        setTurns(0)
+
+        setStartTime(new Date().getTime())
+        stop()
+        reset()
+        setWon(false)
+        setGameOver(false)
     }
 
     function move(from: ICoords, to: ICoords) {
         if (game && canMove(from, to)) {
             let newBoard = [...game.board]
             // move brick
+            setTurns(turns+1)
             newBoard[to.row][to.col] = game.board[from.row][from.col]
             newBoard[from.row][from.col] = CELL_TYPES.AIR
             setCanClick(false)
@@ -89,6 +151,7 @@ export default function Game(props: {
                     checkBoard(newBoard)
                 }, MOVING_TIMEOUT * 2)
             } else {
+                setCanClick(true)
                 checkPairs(newBoard)
             }
         } else {
@@ -117,25 +180,18 @@ export default function Game(props: {
         }
         
         if (blocks.size === 0) {
-            won()
+            setWon(true)
         } else {
-            setCanClick(true)
             blocks.forEach((v, k) => {
                 if (v < 2) {
-                    gameOver()
+                    if (!gameOver) setGameOver(true)
                 }
             })
         }
     }
 
-    function won() {
-        props.onWin()
-        setCanClick(false)
-    }
-
-    function gameOver() {
-        props.onFail()
-        setCanClick(false)
+    function click(itemCoords: ICoords) {
+        if (!running) start()
     }
 
     function canMove(from: ICoords, to: ICoords) {
@@ -159,8 +215,14 @@ export default function Game(props: {
 
     return (
         <div className={styles.container}>
-            { game && <><h2>{game.title}</h2>
-            <Board canClick={canClick} board={game?.board} onMove={move} />
+            { game && <>
+            <h2>{game.id}. {game.title}</h2>
+            { lastSolved && <p>Last Solved: Turns: {lastSolved.turn}, Time: {formatTime(lastSolved.time)}</p> }
+            <Board canClick={canClick} board={game?.board} onMove={move} onClick={click} />
+            <div className={styles.stats}>
+                <span>Turns: {turns} / min: {game.solution.length / 2}</span>
+                <span>, Time: { formatTime(seconds) }</span>
+            </div>
             <div className={styles.buttonbox}>
                 <button className='button' onClick={() => startNewGame()}>Re run</button>
             </div>
@@ -169,3 +231,4 @@ export default function Game(props: {
     
     )
 }
+

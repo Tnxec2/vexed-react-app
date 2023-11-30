@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 import { CELL_TYPES } from "../const"
 import { ILevel, TBoard } from "../model/level"
 import { IPackFile } from "../model/packfile"
+import { TPackFile } from "../model/stats"
+import { loadStats } from "./storage"
 
 
 export function useGetLevels(pack: IPackFile) {
@@ -23,14 +25,30 @@ export function useGetLevels(pack: IPackFile) {
                 else return d.split('\n')
             })
             .then((lines) => {
-                setLevels(parseLevels(lines))
+                setLevels(loadStatsInLevels(pack.file, parseLevels(lines)))
             })
     }, [pack])
 
-    return levels
+    return { levels, setLevels }
+}
+
+function loadStatsInLevels(packfile: TPackFile, levels: ILevel[]): ILevel[] {
+    const savedStats = loadStats()
+    
+    const levelStats = savedStats?.solvedLevels.get(packfile)
+    let result: ILevel[]
+    if (levelStats?.levels) {        
+        result = levels.map((level) => {
+            return levelStats.levels.has(level.id) ? {...level, solved: levelStats.levels.get(level.id)} : level
+        })
+    } else {
+        result = levels
+    }
+    return result
 }
 
 export function parseLevels(lines: string[]) {
+    var id: number = 0
     var title: string | undefined
     var board: TBoard
     var solution: string
@@ -41,10 +59,13 @@ export function parseLevels(lines: string[]) {
         if (line.includes('[Level]')) {
             if (title) {
                 newLevels.push({
+                    id: id,
                     title: title,
                     board: board,
                     solution: solution,
                 })
+                
+                id++
             }
             title = undefined
         } else if (line.includes('title'))

@@ -1,4 +1,5 @@
 import styles from './AlertBox.module.css'
+import './AlertBox.css'
 
 export enum ALERT_TYPE {
     ERROR = 'error',
@@ -9,7 +10,7 @@ export enum ALERT_TYPE {
 export default function AlertBox(props: {
     message: string
     type: ALERT_TYPE
-    onClose: () => void
+    onClose?: () => void
 }) {
     return (
         <div className={`${styles.alertbox} ${props.type}`}>
