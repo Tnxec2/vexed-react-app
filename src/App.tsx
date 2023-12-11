@@ -51,12 +51,14 @@ function App() {
     return (
         <div className="App">
             <div className="content">
-                <h1>Vexed!</h1>
+                <h1>
+                <img src='/assets/logo.png' title='Vexed' alt='Vexed!'/>
+                </h1>
                 <h2>
                     {pack.title}
                     <button
                         type="button"
-                        className="button selectPackButton"
+                        className="button ms-3"
                         onClick={() => setShowPackList(true)}
                     >
                         Select Pack
@@ -65,19 +67,12 @@ function App() {
                 <h3>
                     {pack.desc}
                 </h3>
-
-                <button
-                        type="button"
-                        className="button selectLevelButton"
-                        onClick={() => setShowLevelList(true)}
-                    >
-                        Select Level
-                    </button>
                 {game && (
                     <Game
                         initGame={game}
                         onWin={win}
                         onFail={() => setGameOver(true)}
+                        onSelectLevel={() => setShowLevelList(true)}
                     />
                 )}
             </div>

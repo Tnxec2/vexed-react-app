@@ -12,6 +12,7 @@ export default function Game(props: {
     initGame: ILevel
     onWin: (turnCount: number, time: number) => void
     onFail: () => void
+    onSelectLevel: () => void
 }) {
     const [game, setGame] = useState<ILevel>()
     const [lastSolved, setLastSolved] = useState<ILevelSolvedData>()
@@ -214,9 +215,19 @@ export default function Game(props: {
     }
 
     return (
+
         <div className={styles.container}>
             { game && <>
-            <h2>{game.id}. {game.title}</h2>
+            <h2>
+                {game.id}. {game.title}
+                <button
+                    type="button"
+                    className="button ms-3"
+                    onClick={() => props.onSelectLevel()}
+                >
+                    Select Level
+                </button>
+            </h2>
             { lastSolved && <p>Last Solved: Turns: {lastSolved.turn}, Time: {formatTime(lastSolved.time)}</p> }
             <Board canClick={canClick} board={game?.board} onMove={move} onClick={click} />
             <div className={styles.stats}>
