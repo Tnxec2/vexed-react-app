@@ -22,8 +22,6 @@ export default function Game(props: {
     const [gameOver, setGameOver] = useState(false)
     const [turns, setTurns] = useState(0)
 
-    const [startTime, setStartTime] = useState(new Date().getTime())
-
     const [seconds, setSeconds] = useState(0)
     const [running, setRunning] = useState(true)
 
@@ -88,7 +86,7 @@ export default function Game(props: {
         setCanClick(true)
         setTurns(0)
         setMoves([])
-        setStartTime(new Date().getTime())
+        
         stop()
         reset()
         setWon(false)
