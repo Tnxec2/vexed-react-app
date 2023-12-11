@@ -1,14 +1,17 @@
+.table {
+    display: table;
+    border-collapse: collapse;
+}
 .row {
-    margin: 0 auto;
-    padding: 0;
+    display: table-row;
 }
 
 .cell {
-    width: 3em;
-    height: 3em;
-    display: inline-block;
-    border: 1px dotted #999999;
-    margin: 0 2px 0 0;
+    width: 30pt;
+    height: 30pt;
+    display: table-cell;
+    /* border: 1px dotted #999999; */
+    font-size: 0em;
 }
 
 .cell img {

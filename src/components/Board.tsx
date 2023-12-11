@@ -83,7 +83,7 @@ export default function Board(props: {
         }
     }
     return (
-        <>
+        <div className={styles.table}>
             {props.board.map((row, rowi) => (
                 <div key={rowi} className={styles.row}>
                     {row.map((cell, celli) =>
@@ -91,6 +91,6 @@ export default function Board(props: {
                     )}
                 </div>
             ))}
-        </>
+        </div>
     )
 }
