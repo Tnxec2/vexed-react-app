@@ -11,7 +11,7 @@ export function useGetLevels(pack: IPackFile) {
     const [levels, setLevels] = useState<ILevel[]>([])
 
     useEffect(() => {
-        const file = process.env.PUBLIC_URL + '/levels/' + pack.file
+        const file = 'levels/' + pack.file
 
         fetch(file, {
             method: 'GET',

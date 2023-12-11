@@ -52,7 +52,7 @@ function App() {
         <div className="App">
             <div className="content">
                 <h1>
-                <img src='/assets/logo.png' title='Vexed' alt='Vexed!'/>
+                <img src='assets/logo.png' title='Vexed' alt='Vexed!'/>
                 </h1>
                 <h2>
                     {pack.title}
