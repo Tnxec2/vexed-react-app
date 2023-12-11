@@ -1,6 +1,7 @@
 .table {
     display: table;
     border-collapse: collapse;
+    margin: 0 auto;
 }
 .row {
     display: table-row;
