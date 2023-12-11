@@ -1,6 +1,6 @@
 import { IPackFile } from './model/packfile'
 
-export const MOVING_TIMEOUT = 200
+export const MOVING_TIMEOUT = 100
 
 export const CELL_TYPES = {
     WALL: 'X',
